@@ -17,18 +17,23 @@ public class PatentDto {
     private String project;
     private String status;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date statusDate;
+//    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private String statusDate;
+
     private String application;
+    private String appStoragePath;
     private String techFile;
+    private String techFileStoragePath;
     private String cert;
+    private String certStoragePath;
+
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date updateDate;
 
     public PatentDto() {
     }
 
-    public PatentDto(String patentName, String inventor, String patentType, String project, String status, Date statusDate, String application, String techFile, String cert) {
+    public PatentDto(String patentName, String inventor, String patentType, String project, String status, String statusDate, String application, String appStoragePath, String techFile, String techFileStoragePath, String cert, String certStoragePath) {
         this.patentName = patentName;
         this.inventor = inventor;
         this.patentType = patentType;
@@ -36,8 +41,11 @@ public class PatentDto {
         this.status = status;
         this.statusDate = statusDate;
         this.application = application;
+        this.appStoragePath = appStoragePath;
         this.techFile = techFile;
+        this.techFileStoragePath = techFileStoragePath;
         this.cert = cert;
+        this.certStoragePath = certStoragePath;
     }
 
     @Override
@@ -49,10 +57,13 @@ public class PatentDto {
                 ", patentType='" + patentType + '\'' +
                 ", project='" + project + '\'' +
                 ", status='" + status + '\'' +
-                ", statusDate=" + statusDate +
+                ", statusDate='" + statusDate + '\'' +
                 ", application='" + application + '\'' +
+                ", appStoragePath='" + appStoragePath + '\'' +
                 ", techFile='" + techFile + '\'' +
+                ", techFileStoragePath='" + techFileStoragePath + '\'' +
                 ", cert='" + cert + '\'' +
+                ", certStoragePath='" + certStoragePath + '\'' +
                 ", updateDate=" + updateDate +
                 '}';
     }
@@ -105,11 +116,11 @@ public class PatentDto {
         this.status = status;
     }
 
-    public Date getStatusDate() {
+    public String getStatusDate() {
         return statusDate;
     }
 
-    public void setStatusDate(Date statusDate) {
+    public void setStatusDate(String statusDate) {
         this.statusDate = statusDate;
     }
 
@@ -121,6 +132,14 @@ public class PatentDto {
         this.application = application;
     }
 
+    public String getAppStoragePath() {
+        return appStoragePath;
+    }
+
+    public void setAppStoragePath(String appStoragePath) {
+        this.appStoragePath = appStoragePath;
+    }
+
     public String getTechFile() {
         return techFile;
     }
@@ -129,12 +148,28 @@ public class PatentDto {
         this.techFile = techFile;
     }
 
+    public String getTechFileStoragePath() {
+        return techFileStoragePath;
+    }
+
+    public void setTechFileStoragePath(String techFileStoragePath) {
+        this.techFileStoragePath = techFileStoragePath;
+    }
+
     public String getCert() {
         return cert;
     }
 
     public void setCert(String cert) {
         this.cert = cert;
+    }
+
+    public String getCertStoragePath() {
+        return certStoragePath;
+    }
+
+    public void setCertStoragePath(String certStoragePath) {
+        this.certStoragePath = certStoragePath;
     }
 
     public Date getUpdateDate() {

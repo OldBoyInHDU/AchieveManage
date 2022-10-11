@@ -16,14 +16,17 @@
         <result column="status" property="status"/>
         <result column="status_date" property="statusDate"/>
         <result column="application" property="application"/>
+        <result column="app_storage_path" property="appStoragePath"/>
         <result column="tech_file" property="techFile"/>
+        <result column="tech_file_storage_path" property="techFileStoragePath"/>
         <result column="cert" property="cert"/>
+        <result column="cert_storage_path" property="certStoragePath"/>
         <result column="update_date" property="updateDate"/>
 
     </resultMap>
 
 
-    <!--    根据岗位or视频标题查询-->
+    <!--   查询-->
     <select id="getPatent" parameterType="String" resultType="com.nyzs.achieve.bean.dto.PatentDto" resultMap="patentDtoMap">
         select
         *
@@ -48,6 +51,96 @@
         </where>
 
     </select>
+
+    <!--  根据 专利名称 查询-->
+    <select id="getPatentByName" parameterType="String" resultType="com.nyzs.achieve.bean.dto.PatentDto" resultMap="patentDtoMap">
+        select
+        *
+        from
+        tech_inno_patent tip
+        <where>
+            <if test="patentName != null and patentName != '' ">
+                tip.patent_name LIKE CONCAT(CONCAT('%', #{patentName}),'%')
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insertPatentInfo" parameterType="com.nyzs.achieve.bean.dto.PatentDto">
+        insert into
+            tech_inno_patent
+        (
+            id,
+            patent_name,
+            inventor,
+            patent_type,
+            project,
+            status,
+            status_date,
+            application,
+            app_storage_path,
+            tech_file,
+            tech_file_storage_path,
+            cert,
+            cert_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{patentName},
+                   #{inventor},
+                   ifnull(#{patentType}, "待补充"),
+                   ifnull(#{project}, "待补充"),
+                   ifnull(#{status}, "待补充"),
+                   ifnull(STR_TO_DATE(#{statusDate},'%Y-%m-%d'), "待补充"),
+                   ifnull(#{application}, "待补充"),
+                   ifnull(#{appStoragePath}, "待补充"),
+                   ifnull(#{techFile}, "待补充"),
+                   ifnull(#{techFileStoragePath}, "待补充"),
+                   ifnull(#{cert}, "待补充"),
+                   ifnull(#{certStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updatePatentInfo" parameterType="com.nyzs.achieve.bean.dto.PatentDto">
+        update
+            tech_inno_patent tip
+        <trim prefix="set" suffixOverrides=",">
+            <if test="patentName != null and patentName!=''">
+                tip.patent_name=#{patentName},</if>
+            <if test="inventor != null and inventor!=''">
+                tip.inventor=#{inventor},</if>
+            <if test="patentType != null and patentType!=''">
+                tip.patent_type=#{patentType},</if>
+            <if test="project != null and project!=''">
+                tip.project=#{project},</if>
+            <if test="status != null and status!=''">
+                tip.status=#{status},</if>
+            <if test="statusDate != null">
+                tip.status_date=STR_TO_DATE(#{statusDate},'%Y-%m-%d'),</if>
+            <if test="application != null and application!=''">
+                tip.application=#{application},</if>
+            <if test="appStoragePath != null and appStoragePath!=''">
+                tip.app_storage_path=#{appStoragePath},</if>
+            <if test="techFile != null and techFile!=''">
+                tip.tech_file=#{techFile},</if>
+            <if test="techFileStoragePath != null and techFileStoragePath!=''">
+                tip.tech_file_storage_path=#{techFileStoragePath},</if>
+            <if test="cert != null and cert!=''">
+                tip.cert=#{cert},</if>
+            <if test="certStoragePath != null and certStoragePath!=''">
+                tip.cert_storage_path=#{certStoragePath},</if>
+            tip.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+
+
+        </trim>
+
+        where
+        tip.patent_name = #{patentName}
+
+
+    </update>
 
     <insert id="addVideoInfo" parameterType="com.nyzs.achieve.bean.dto.VideoFileInfoDto">
         insert into
