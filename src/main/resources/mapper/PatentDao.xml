@@ -142,30 +142,9 @@
 
     </update>
 
-    <insert id="addVideoInfo" parameterType="com.nyzs.achieve.bean.dto.VideoFileInfoDto">
-        insert into
-            video_file_info
-        (
-            id,
-            video_file_name,
-            unit,
-            position,
-            storage_path,
-            upload_date
-        )
-        values (
-                   id,
-                   #{videoFileName},
-                   #{unit},
-                   #{position},
-                   #{storagePath},
-                   DATE_FORMAT(NOW(), '%Y-%m-%d')
-               )
-    </insert>
-
-    <delete id="deleteVideoInfo" parameterType="Integer">
+    <delete id="deletePatentById" parameterType="Integer">
         delete from
-            video_file_info
+            tech_inno_patent
         where
             id = #{id}
     </delete>

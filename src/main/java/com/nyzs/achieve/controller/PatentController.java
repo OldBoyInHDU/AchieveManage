@@ -103,5 +103,16 @@ public class PatentController {
         }
     }
 
+    @RequestMapping(value = "/deletePatentById", method = RequestMethod.DELETE)
+    public ResponseResult deletePatentById(Integer id) {
+        try {
+            patentService.deletePatentById(id);
+        } catch (Exception e) {
+            logger.error("专利删除错误", e);
+            return ResponseResult.failed(e.getMessage(), "专利删除失败");
+        }
+        return ResponseResult.ok("删除成功");
+    }
+
 
 }

@@ -11,12 +11,6 @@ import java.util.List;
 @Mapper
 public interface PatentDao {
 
-    List<VideoFileInfoDto> getVideoInfoByPosOrTitle(String pos, String title) throws Exception;
-
-    void addVideoInfo(VideoFileInfoDto videoFileInfoDto) throws Exception;
-
-    void deleteVideoInfo(Integer id) throws Exception;
-
     List<PatentDto> getPatent(String patentName, String inventor, String patentType, String status, String startDate, String endDate);
 
     void insertPatentInfo(PatentDto patentDto) throws Exception;
@@ -24,4 +18,6 @@ public interface PatentDao {
     PatentDto getPatentByName(String patentName) throws Exception;
 
     void updatePatentInfo(PatentDto patentDto) throws Exception;
+
+    void deletePatentById(Integer id) throws Exception;
 }

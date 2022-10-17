@@ -55,4 +55,9 @@ public class PatentServiceImpl implements PatentService {
         System.out.println("getByName: " + patent);
         return patent;
     }
+
+    @Override
+    public void deletePatentById(Integer id) throws Exception {
+        patentDao.deletePatentById(id);
+    }
 }
