@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface PatentDao {
 
-    List<PatentDto> getPatent(String patentName, String inventor, String patentType, String status, String startDate, String endDate);
+    List<PatentDto> getPatent(String patentName, String inventor, String patentType, String status, String project, String startDate, String endDate);
 
     void insertPatentInfo(PatentDto patentDto) throws Exception;
 

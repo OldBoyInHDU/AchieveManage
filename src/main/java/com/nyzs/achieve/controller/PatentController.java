@@ -34,7 +34,7 @@ public class PatentController {
     UploadService uploadService;
 
     @RequestMapping(value = "/getPatent", method = RequestMethod.GET)
-    public ResponseResult getPatent(String patentName, String inventor, String patentType, String status, String startDate, String endDate) {
+    public ResponseResult getPatent(String patentName, String inventor, String patentType, String status, String project, String startDate, String endDate) {
         try {
 //            System.out.println(patentName);
 //            System.out.println(inventor);
@@ -42,7 +42,7 @@ public class PatentController {
 //            System.out.println(status);
 //            System.out.println(startDate);
 //            System.out.println(endDate);
-            List<PatentDto> patentDtoList = patentService.getPatent(patentName, inventor, patentType, status, startDate, endDate);
+            List<PatentDto> patentDtoList = patentService.getPatent(patentName, inventor, patentType, status, project, startDate, endDate);
             System.out.println(patentDtoList);
             return ResponseResult.ok(patentDtoList, "专利查询成功");
         } catch (Exception e) {

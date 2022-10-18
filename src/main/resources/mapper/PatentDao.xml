@@ -45,6 +45,9 @@
             <if test="status != null and status != '' ">
                 AND tip.status LIKE CONCAT(CONCAT('%', #{status}),'%')
             </if>
+            <if test="project != null and project != '' ">
+                AND tip.project LIKE CONCAT(CONCAT('%', #{project}),'%')
+            </if>
             <if test="startDate != null and startDate!= '' and endDate != null and endDate != '' ">
                 AND tip.status_date BETWEEN #{startDate} AND #{endDate}
             </if>

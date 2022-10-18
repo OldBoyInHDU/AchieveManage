@@ -25,9 +25,9 @@ public class PatentServiceImpl implements PatentService {
     PatentDao patentDao;
 
     @Override
-    public List<PatentDto> getPatent(String patentName, String inventor, String patentType, String status, String startDate, String endDate) throws ParseException {
+    public List<PatentDto> getPatent(String patentName, String inventor, String patentType, String status, String project, String startDate, String endDate) throws ParseException {
 
-        return patentDao.getPatent(patentName, inventor, patentType, status, startDate, endDate);
+        return patentDao.getPatent(patentName, inventor, patentType, status, project, startDate, endDate);
     }
 
     @Override
