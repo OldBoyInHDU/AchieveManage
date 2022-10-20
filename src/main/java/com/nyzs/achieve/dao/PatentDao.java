@@ -1,8 +1,6 @@
 package com.nyzs.achieve.dao;
 
 import com.nyzs.achieve.bean.dto.PatentDto;
-import com.nyzs.achieve.bean.dto.VideoFileInfoDto;
-import jdk.internal.org.objectweb.asm.tree.analysis.SourceValue;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Date;

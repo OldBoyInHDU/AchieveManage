@@ -1,7 +1,6 @@
 package com.nyzs.achieve.service.impl;
 
 import com.nyzs.achieve.bean.dto.PaperDto;
-import com.nyzs.achieve.bean.dto.PatentDto;
 import com.nyzs.achieve.bean.vo.PaperVo;
 import com.nyzs.achieve.dao.PaperDao;
 import com.nyzs.achieve.service.PaperService;

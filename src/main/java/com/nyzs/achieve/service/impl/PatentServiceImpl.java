@@ -1,7 +1,6 @@
 package com.nyzs.achieve.service.impl;
 
 import com.nyzs.achieve.bean.dto.PatentDto;
-import com.nyzs.achieve.bean.dto.VideoFileInfoDto;
 import com.nyzs.achieve.dao.PatentDao;
 import com.nyzs.achieve.service.PatentService;
 import org.springframework.beans.factory.annotation.Autowired;

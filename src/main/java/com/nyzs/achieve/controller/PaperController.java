@@ -41,7 +41,7 @@ public class PaperController {
             System.out.println(paperDtoList);
             return ResponseResult.ok(paperDtoList, "论文查询成功");
         } catch (Exception e) {
-            logger.error("专利查询错误", e);
+            logger.error("论文查询错误", e);
             return ResponseResult.failed(e.getMessage(), "论文查询失败");
         }
     }
@@ -50,10 +50,10 @@ public class PaperController {
     public ResponseResult getPaperByName(String paperName) {
         try {
             PaperDto paper = paperService.getPaperByName(paperName);
-            return ResponseResult.ok(paper, "专利查询成功");
+            return ResponseResult.ok(paper, "论文查询成功");
         } catch (Exception e) {
-            logger.error("专利查询错误", e);
-            return ResponseResult.failed(e.getMessage(), "专利查询失败");
+            logger.error("论文查询错误", e);
+            return ResponseResult.failed(e.getMessage(), "论文查询失败");
         }
     }
 
@@ -64,10 +64,10 @@ public class PaperController {
         String filename = null;
         try {
             filename = uploadService.uploadDoc(file);
-            return ResponseResult.ok(filename, "专利文件上传成功");
+            return ResponseResult.ok(filename, "论文文件上传成功");
         } catch (IOException e) {
-            logger.error("专利文件上传程序错误", e);
-            return ResponseResult.failed(e.getMessage(),"专利文件上传失败");
+            logger.error("论文文件上传程序错误", e);
+            return ResponseResult.failed(e.getMessage(),"论文文件上传失败");
         }
 
     }
@@ -79,10 +79,10 @@ public class PaperController {
         try {
 //            System.out.println("controller:" + statusDate);
             paperService.insertPaperInfo(paperVo);
-            return ResponseResult.ok("专利登记成功");
+            return ResponseResult.ok("论文登记成功");
         } catch (Exception e) {
-            logger.error("专利提交错误", e);
-            return ResponseResult.failed(e.getMessage(), "专利登记失败");
+            logger.error("论文提交错误", e);
+            return ResponseResult.failed(e.getMessage(), "论文登记失败");
         }
     }
 
@@ -91,10 +91,10 @@ public class PaperController {
         try {
             paperService.deletePaperById(id);
         } catch (Exception e) {
-            logger.error("专利删除错误", e);
-            return ResponseResult.failed(e.getMessage(), "专利删除失败");
+            logger.error("论文删除错误", e);
+            return ResponseResult.failed(e.getMessage(), "论文删除失败");
         }
-        return ResponseResult.ok("删除成功");
+        return ResponseResult.ok("论文删除成功");
     }
 
 

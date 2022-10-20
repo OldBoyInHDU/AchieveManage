@@ -28,6 +28,8 @@ public class PaperDto {
     private String scanFileStoragePath;
     private String searchProof;
     private String searchProofStoragePath;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date updateDate;
 
     public PaperDto() {
     }
@@ -50,9 +52,6 @@ public class PaperDto {
         this.searchProof = searchProof;
         this.searchProofStoragePath = searchProofStoragePath;
     }
-
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date updateDate;
 
     @Override
     public String toString() {
