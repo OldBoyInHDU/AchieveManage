@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.PaperDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">tech_inno_paper</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.PaperDto" id="paperDtoMap">
+        <id column="id" property="id"/>
+        <result column="paper_name" property="paperName"/>
+        <result column="author" property="author"/>
+        <result column="journal" property="journal"/>
+        <result column="project" property="project"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="status" property="status"/>
+        <result column="approval" property="approval"/>
+        <result column="approval_storage_path" property="approvalStoragePath"/>
+        <result column="paper_eng" property="paperEng"/>
+        <result column="paper_eng_storage_path" property="paperEngStoragePath"/>
+        <result column="paper_chn" property="paperChn"/>
+        <result column="paper_chn_storage_path" property="paperChnStoragePath"/>
+        <result column="scan_file" property="scanFile"/>
+        <result column="scan_file_storage_path" property="scanFileStoragePath"/>
+        <result column="search_proof" property="searchProof"/>
+        <result column="scan_proof_storage_path" property="searchProofStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+
+    </resultMap>
+
+
+    <!--   查询-->
+    <select id="getPaper" parameterType="String" resultType="com.nyzs.achieve.bean.dto.PaperDto" resultMap="paperDtoMap">
+        select
+        *
+        from
+        tech_inno_paper tip
+        <where>
+            <if test="paperName != null and paperName != '' ">
+                tip.paper_name LIKE CONCAT(CONCAT('%', #{paperName}),'%')
+            </if>
+            <if test="author != null and author != '' ">
+                AND tip.author LIKE CONCAT(CONCAT('%', #{author}),'%')
+            </if>
+            <if test="status != null and status != '' ">
+                AND tip.status LIKE CONCAT(CONCAT('%', #{status}),'%')
+            </if>
+            <if test="project != null and project != '' ">
+                AND tip.project LIKE CONCAT(CONCAT('%', #{project}),'%')
+            </if>
+            <if test="startDate != null and startDate!= '' and endDate != null and endDate != '' ">
+                AND tip.status_date BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+
+    </select>
+
+    <!--  根据 专利名称 查询-->
+    <select id="getPaperByName" parameterType="String" resultType="com.nyzs.achieve.bean.dto.PaperDto" resultMap="paperDtoMap">
+        select
+        *
+        from
+        tech_inno_paper tip
+        <where>
+            <if test="paperName != null and paperName != '' ">
+                tip.paper_name = #{paperName}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insertPaperInfo" parameterType="com.nyzs.achieve.bean.dto.PaperDto">
+        insert into
+            tech_inno_paper
+        (
+            id,
+            paper_name,
+            author,
+            journal,
+            project,
+            status_date,
+            status,
+            approval,
+            approval_storage_path,
+            paper_chn,
+            paper_chn_storage_path,
+            paper_eng,
+            paper_eng_storage_path,
+            scan_file,
+            scan_file_storage_path,
+            search_proof,
+            scan_proof_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{paperName},
+                   #{author},
+                   ifnull(#{journal}, "待补充"),
+                   ifnull(#{project}, "待补充"),
+                   ifnull(STR_TO_DATE(#{statusDate},'%Y-%m-%d'), "待补充"),
+                   ifnull(#{status}, "待补充"),
+                   ifnull(#{approval}, "待补充"),
+                   ifnull(#{approvalStoragePath}, "待补充"),
+                   ifnull(#{paperChn}, "待补充"),
+                   ifnull(#{paperChnStoragePath}, "待补充"),
+                   ifnull(#{paperEng}, "待补充"),
+                   ifnull(#{paperEngStoragePath}, "待补充"),
+                   ifnull(#{scanFile}, "待补充"),
+                   ifnull(#{scanFileStoragePath}, "待补充"),
+                   ifnull(#{searchProof}, "待补充"),
+                   ifnull(#{searchProofStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updatePaperInfo" parameterType="com.nyzs.achieve.bean.dto.PaperDto">
+        update
+            tech_inno_paper tip
+        <trim prefix="set" suffixOverrides=",">
+            <if test="paperName != null and paperName!=''">
+                tip.paper_name=#{paperName},</if>
+            <if test="author != null and author!=''">
+                tip.author=#{author},</if>
+            <if test="journal != null and journal!=''">
+                tip.journal=#{journal},</if>
+            <if test="project != null and project!=''">
+                tip.project=#{project},</if>
+            <if test="statusDate != null">
+                tip.status_date=STR_TO_DATE(#{statusDate},'%Y-%m-%d'),</if>
+            <if test="status != null and status!=''">
+                tip.status=#{status},</if>
+            <if test="approval != null and approval!=''">
+                tip.approval=#{approval},</if>
+            <if test="approvalStoragePath != null and approvalStoragePath!=''">
+                tip.approval_storage_path=#{approvalStoragePath},</if>
+            <if test="paperChn != null and paperChn!=''">
+                tip.paper_chn=#{paperChn},</if>
+            <if test="paperChnStoragePath != null and paperChnStoragePath!=''">
+                tip.paper_chn_storage_path=#{paperChnStoragePath},</if>
+            <if test="paperEng != null and paperEng!=''">
+                tip.paper_eng=#{paperEng},</if>
+            <if test="paperEngStoragePath != null and paperEngStoragePath!=''">
+                tip.paper_eng_storage_path=#{paperEngStoragePath},</if>
+            <if test="scanFile != null and scanFile!=''">
+                tip.scan_file=#{scanFile},</if>
+            <if test="scanFileStoragePath != null and scanFileStoragePath!=''">
+                tip.scan_file_storage_path=#{scanFileStoragePath},</if>
+            <if test="searchProof != null and searchProof!=''">
+                tip.search_proof=#{searchProof},</if>
+            <if test="searchProofStoragePath != null and searchProofStoragePath!=''">
+                tip.scan_proof_storage_path=#{searchProofStoragePath},</if>
+            tip.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+
+
+        </trim>
+
+        where
+        tip.paper_name = #{paperName}
+
+
+    </update>
+
+    <delete id="deletePaperById" parameterType="Integer">
+        delete from
+            tech_inno_paper
+        where
+            id = #{id}
+    </delete>
+
+    <!--&lt;!&ndash; id属性填写Dao文件里的函数名称 xxType是参数或是结果的类型根据情况填写 &ndash;&gt;
+    &lt;!&ndash; 查询所有   &ndash;&gt;
+    <select id="getExamDate" resultType="String">
+        SELECT
+            exam_date
+        from
+            exam_date
+        where id = (select max(id) from exam_date)
+    </select>
+
+    &lt;!&ndash;   查考试状态&ndash;&gt;
+    <select id="getExamStatus" resultType="com.nyzs.examonline.bean.EmployeeGrades" resultMap="employeeGradesMap">
+        SELECT
+            *
+        FROM
+            employee_grades
+        WHERE
+            employee_num = #{num}
+        AND
+            exam_date = #{examdate}
+    </select>
+
+    &lt;!&ndash;    生成10道题的试卷&ndash;&gt;
+    <insert id="generateExamPaper" parameterType="String">
+
+	    insert into
+		    exam_paper_generate_date(question_idx, question_content, answer, exam_date)
+            (select question_idx, question_content, answer, #{examdate} from exam_paper_total ORDER BY RAND() LIMIT 6)
+            UNION
+            (select question_idx, question_content, answer, #{examdate} from exam_paper_item_culture ORDER BY RAND() LIMIT 2)
+            UNION
+            (select question_idx, question_content, answer, #{examdate} from exam_paper_item_rule ORDER BY RAND() LIMIT 2);
+    </insert>
+
+    &lt;!&ndash; insert into
+    exam_paper_generate_date
+    select
+    question_idx,
+    question_content,
+    answer,
+    #{examdate}
+    from
+    exam_paper_total
+    ORDER BY
+    RAND() LIMIT 10; &ndash;&gt;
+
+    &lt;!&ndash; 查询试卷   &ndash;&gt;
+    <select id="getExamPaperByExamDate" resultType="com.nyzs.examonline.bean.ExamPaper" resultMap="examPaperMap">
+        select
+            *
+        from
+            exam_paper_generate_date
+        where
+            exam_date = #{examdate}
+    </select>
+
+    &lt;!&ndash;    修改考试期数&ndash;&gt;
+    <insert id="updateExamDate" parameterType="String">
+        insert into
+            exam_date
+        values
+            (id, #{examdate})
+    </insert>
+
+    &lt;!&ndash; 登记成绩   &ndash;&gt;
+    <insert id="recordGrades" parameterType="com.nyzs.examonline.bean.EmployeeGrades">
+        INSERT INTO
+            employee_grades
+            (id, employee_num, employee_name, exam_date, grades)
+        VALUES
+            (id,#{employeeNum},#{employeeName},#{examDate},#{grades})
+    </insert>
+
+    &lt;!&ndash;    获得所有员工的成绩&ndash;&gt;
+    <select id="getAllGrades" resultType="com.nyzs.examonline.bean.EmployeeGrades" resultMap="employeeGradesMap">
+        select
+            *
+        from
+            employee_grades
+    </select>
+
+    &lt;!&ndash;    根据姓名获得员工成绩&ndash;&gt;
+    <select id="getGradesByName" parameterType="String" resultType="com.nyzs.examonline.bean.EmployeeGrades" resultMap="employeeGradesMap">
+        select
+            *
+        from
+            employee_grades
+        where
+            employee_name = #{name}
+    </select>
+
+    &lt;!&ndash;    根据姓名or考试日期获得员工成绩&ndash;&gt;
+    <select id="getGradesByNameOrExamDate" parameterType="String" resultType="com.nyzs.examonline.bean.EmployeeGrades" resultMap="employeeGradesMap">
+        select
+            *
+        from
+            employee_grades eg
+        <where>
+            <if test="examDate!=null and examDate!='' ">
+                eg.exam_date LIKE CONCAT(CONCAT('%', #{examDate}),'%')
+            </if>
+            <if test="name!= null and name!= '' ">
+                AND eg.employee_name = #{name}
+            </if>
+        </where>
+
+    </select>-->
+
+
+
+
+
+
+
+
+</mapper>
