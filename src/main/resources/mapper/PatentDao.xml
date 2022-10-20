@@ -63,7 +63,7 @@
         tech_inno_patent tip
         <where>
             <if test="patentName != null and patentName != '' ">
-                tip.patent_name LIKE CONCAT(CONCAT('%', #{patentName}),'%')
+                tip.patent_name = #{patentName}
             </if>
         </where>
 
