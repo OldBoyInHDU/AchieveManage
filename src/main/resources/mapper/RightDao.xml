@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.RightDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">tech_inno_software_copyright</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.RightDto" id="rightDtoMap">
+        <id column="id" property="id"/>
+        <result column="right_name" property="rightName"/>
+        <result column="author" property="author"/>
+        <result column="project" property="project"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="status" property="status"/>
+        <result column="application" property="application"/>
+        <result column="app_storage_path" property="appStoragePath"/>
+        <result column="manual" property="manual"/>
+        <result column="manual_storage_path" property="manualStoragePath"/>
+        <result column="codes" property="codes"/>
+        <result column="codes_storage_path" property="codesStoragePath"/>
+        <result column="scan_file" property="scanFile"/>
+        <result column="scan_file_storage_path" property="scanFileStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+
+    </resultMap>
+
+
+    <!--   查询-->
+    <select id="getRight" parameterType="String" resultType="com.nyzs.achieve.bean.dto.RightDto" resultMap="rightDtoMap">
+        select
+        *
+        from
+        tech_inno_software_copyright tisc
+        <where>
+            <if test="rightName != null and rightName != '' ">
+                tisc.right_name LIKE CONCAT(CONCAT('%', #{rightName}),'%')
+            </if>
+            <if test="author != null and author != '' ">
+                AND tisc.author LIKE CONCAT(CONCAT('%', #{author}),'%')
+            </if>
+            <if test="status != null and status != '' ">
+                AND tisc.status LIKE CONCAT(CONCAT('%', #{status}),'%')
+            </if>
+            <if test="project != null and project != '' ">
+                AND tisc.project LIKE CONCAT(CONCAT('%', #{project}),'%')
+            </if>
+            <if test="startDate != null and startDate!= '' and endDate != null and endDate != '' ">
+                AND tisc.status_date BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+
+    </select>
+
+    <!--  根据 专利名称 查询-->
+    <select id="getRightByName" parameterType="String" resultType="com.nyzs.achieve.bean.dto.RightDto" resultMap="rightDtoMap">
+        select
+        *
+        from
+        tech_inno_software_copyright tisc
+        <where>
+            <if test="rightName != null and rightName != '' ">
+                tisc.right_name = #{rightName}
+            </if>
+        </where>
+
+    </select>
+
+    <!--  根据 id 查询-->
+    <select id="getRightById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.RightDto" resultMap="rightDtoMap">
+        select
+        *
+        from
+        tech_inno_software_copyright tisc
+        <where>
+            <if test="id != null and id != '' ">
+                tisc.id = #{id}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insertRightInfo" parameterType="com.nyzs.achieve.bean.dto.RightDto">
+        insert into
+            tech_inno_software_copyright
+        (
+            id,
+            right_name,
+            author,
+            project,
+            status_date,
+            status,
+            application,
+            app_storage_path,
+            manual,
+            manual_storage_path,
+            codes,
+            codes_storage_path,
+            scan_file,
+            scan_file_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{rightName},
+                   #{author},
+                   ifnull(#{project}, "待补充"),
+                   ifnull(STR_TO_DATE(#{statusDate},'%Y-%m-%d'), "待补充"),
+                   ifnull(#{status}, "待补充"),
+                   ifnull(#{application}, "待补充"),
+                   ifnull(#{appStoragePath}, "待补充"),
+                   ifnull(#{manual}, "待补充"),
+                   ifnull(#{manualStoragePath}, "待补充"),
+                   ifnull(#{codes}, "待补充"),
+                   ifnull(#{codesStoragePath}, "待补充"),
+                   ifnull(#{scanFile}, "待补充"),
+                   ifnull(#{scanFileStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateRightInfo" parameterType="com.nyzs.achieve.bean.dto.RightDto">
+        update
+            tech_inno_software_copyright tisc
+        <trim prefix="set" suffixOverrides=",">
+            <if test="rightName != null and rightName!=''">
+                tisc.right_name=#{rightName},</if>
+            <if test="author != null and author!=''">
+                tisc.author=#{author},</if>
+            <if test="project != null and project!=''">
+                tisc.project=#{project},</if>
+            <if test="statusDate != null">
+                tisc.status_date=STR_TO_DATE(#{statusDate},'%Y-%m-%d'),</if>
+            <if test="status != null and status!=''">
+                tisc.status=#{status},</if>
+            <if test="application != null and application!=''">
+                tisc.application=#{application},</if>
+            <if test="appStoragePath != null and appStoragePath!=''">
+                tisc.app_storage_path=#{appStoragePath},</if>
+            <if test="manual != null and manual!=''">
+                tisc.manual=#{manual},</if>
+            <if test="manualStoragePath != null and manualStoragePath!=''">
+                tisc.manual_storage_path=#{manualStoragePath},</if>
+            <if test="codes != null and codes!=''">
+                tisc.codes=#{codes},</if>
+            <if test="codesStoragePath != null and codesStoragePath!=''">
+                tisc.code_storage_path=#{codesStoragePath},</if>
+            <if test="scanFile != null and scanFile!=''">
+                tisc.scan_file=#{scanFile},</if>
+            <if test="scanFileStoragePath != null and scanFileStoragePath!=''">
+                tisc.scan_file_storage_path=#{scanFileStoragePath},</if>
+            tisc.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+
+
+        </trim>
+
+        where
+        tisc.right_name = #{rightName}
+
+
+    </update>
+
+    <delete id="deleteRightById" parameterType="Integer">
+        delete from
+            tech_inno_software_copyright
+        where
+            id = #{id}
+    </delete>
+
+</mapper>
