@@ -37,9 +37,9 @@ public class QualityImproveController {
     UploadService uploadService;
 
     @RequestMapping(value = "/getQualityImprove", method = RequestMethod.GET)
-    public ResponseResult getQualityImprove(String project, String sort, String type, String status, String leader, String member, String startDate, String endDate) {
+    public ResponseResult getQualityImprove(String project, String sort, String type, String status, String leader, String member, String year) {
         try {
-            List<QIDto> qiDtoList = qiService.getQualityImprove(project, sort, type, status, leader, member, startDate, endDate);
+            List<QIDto> qiDtoList = qiService.getQualityImprove(project, sort, type, status, leader, member, year);
             System.out.println(qiDtoList);
             return ResponseResult.ok(qiDtoList, "项目查询成功");
         } catch (Exception e) {

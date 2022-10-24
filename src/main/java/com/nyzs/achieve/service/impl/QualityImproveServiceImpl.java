@@ -24,8 +24,8 @@ public class QualityImproveServiceImpl implements QualityImproveService {
     QualityImproveDao qiDao;
 
     @Override
-    public List<QIDto> getQualityImprove(String project, String sort, String type, String status, String leader, String member, String startDate, String endDate) throws Exception {
-        return qiDao.getQualityImprove(project, sort, type, status, leader, member, startDate, endDate);
+    public List<QIDto> getQualityImprove(String project, String sort, String type, String status, String leader, String member, String year) throws Exception {
+        return qiDao.getQualityImprove(project, sort, type, status, leader, member, year);
     }
 
     @Override

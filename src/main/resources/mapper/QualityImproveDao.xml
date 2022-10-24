@@ -54,8 +54,8 @@
             <if test="status != null and status != '' ">
                 AND tiqi.status LIKE CONCAT(CONCAT('%', #{status}),'%')
             </if>
-            <if test="startDate != null and startDate!= '' and endDate != null and endDate != '' ">
-                AND tiqi.status_date BETWEEN #{startDate} AND #{endDate}
+            <if test="year != null and year!= ''  ">
+                AND tiqi.status_date = #{year}
             </if>
         </where>
 
@@ -118,7 +118,7 @@
                    ifnull(#{leader}, "待补充"),
                    ifnull(#{member}, "待补充"),
                    ifnull(#{status}, "待补充"),
-                   ifnull(STR_TO_DATE(#{statusDate},'%Y-%m-%d'), "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
                    ifnull(#{award}, "待补充"),
                    DATE_FORMAT(NOW(), '%Y-%m-%d')
                )
@@ -160,7 +160,7 @@
             <if test="status != null and status!=''">
                 tiqi.status=#{status},</if>
             <if test="statusDate != null">
-                tiqi.status_date=STR_TO_DATE(#{statusDate},'%Y-%m-%d'),</if>
+                tiqi.status_date=#{statusDate},</if>
             <if test="award != null and award!=''">
                 tiqi.award=#{award},</if>
             tiqi.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')

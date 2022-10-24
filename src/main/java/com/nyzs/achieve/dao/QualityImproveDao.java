@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface QualityImproveDao {
-    List<QIDto> getQualityImprove(String project, String sort, String type, String status, String leader, String member, String startDate, String endDate) throws Exception;
+    List<QIDto> getQualityImprove(String project, String sort, String type, String status, String leader, String member, String year) throws Exception;
 
     QIDto getQIByName(String project) throws Exception;
 
