@@ -110,10 +110,10 @@ public class QualityImproveController {
         }
     }
 
-    @RequestMapping(value = "/deleteQIById", method = RequestMethod.DELETE)
-    public ResponseResult deleteQIById(Integer id) {
+    @RequestMapping(value = "/deleteQIAndDoc", method = RequestMethod.DELETE)
+    public ResponseResult deleteQIAndDoc(Integer id, String project) {
         try {
-            qiService.deleteQIById(id);
+            qiService.deleteQIAndDoc(id, project);
         } catch (Exception e) {
             logger.error("项目删除错误", e);
             return ResponseResult.failed(e.getMessage(), "项目删除失败");

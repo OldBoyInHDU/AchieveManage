@@ -177,6 +177,13 @@
             id = #{id}
     </delete>
 
+    <delete id="deleteQIDocByProject" parameterType="String">
+        delete from
+            tech_inno_quality_improve_doc
+        where
+            project = #{project}
+    </delete>
+
     <!--&lt;!&ndash; id属性填写Dao文件里的函数名称 xxType是参数或是结果的类型根据情况填写 &ndash;&gt;
     &lt;!&ndash; 查询所有   &ndash;&gt;
     <select id="getExamDate" resultType="String">

@@ -23,4 +23,6 @@ public interface QualityImproveDao {
     List<QIDocDto> getQIDocByProject(String project) throws Exception;
 
     void updateQIInfo(QIDto qiDto) throws Exception;
+
+    void deleteQIDocByProject(String project) throws Exception;
 }

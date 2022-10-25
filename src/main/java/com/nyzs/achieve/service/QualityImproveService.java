@@ -18,4 +18,6 @@ public interface QualityImproveService {
     QIDto getQIById(Integer id) throws Exception;
 
     List<QIDocDto> getQIDocByProject(String project) throws Exception;
+
+    void deleteQIAndDoc(Integer id, String project) throws Exception;
 }

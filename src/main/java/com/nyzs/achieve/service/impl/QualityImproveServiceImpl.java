@@ -76,4 +76,10 @@ public class QualityImproveServiceImpl implements QualityImproveService {
     public List<QIDocDto> getQIDocByProject(String project) throws Exception {
         return qiDao.getQIDocByProject(project);
     }
+
+    @Override
+    public void deleteQIAndDoc(Integer id, String project) throws Exception {
+        qiDao.deleteQIById(id);
+        qiDao.deleteQIDocByProject(project);
+    }
 }
