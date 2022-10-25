@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * @author ：RukiHuang
- * @description：TODO
+ * @description：QualityImprove DTO
  * @date ：2022/10/22 9:35
  */
 public class QIDto {
