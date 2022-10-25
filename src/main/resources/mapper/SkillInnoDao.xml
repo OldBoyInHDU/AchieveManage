@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.SkillInnoDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">tech_inno_skill_inno</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.SIDto" id="siMap">
+        <id column="id" property="id"/>
+        <result column="project" property="project"/>
+        <result column="type" property="type"/>
+        <result column="leader" property="leader"/>
+        <result column="member" property="member"/>
+        <result column="status" property="status"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="award" property="award"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.SIDocDto" id="siDocMap">
+        <id column="id" property="id"/>
+        <result column="doc_file_name" property="docFileName"/>
+        <result column="project" property="project"/>
+        <result column="storage_path" property="storagePath"/>
+        <result column="upload_date" property="uploadDate"/>
+    </resultMap>
+
+
+    <!--   查询-->
+    <select id="getSkillInno" parameterType="String" resultType="com.nyzs.achieve.bean.dto.SIDto" resultMap="siMap">
+        select
+        *
+        from
+        tech_inno_skill_inno tisi
+        <where>
+            <if test="project != null and project != '' ">
+                tisi.project LIKE CONCAT(CONCAT('%', #{project}),'%')
+            </if>
+            <if test="type != null and type != '' ">
+                AND tisi.type LIKE CONCAT(CONCAT('%', #{type}),'%')
+            </if>
+            <if test="leader != null and leader != '' ">
+                AND tisi.leader LIKE CONCAT(CONCAT('%', #{leader}),'%')
+            </if>
+            <if test="member != null and member != '' ">
+                AND tisi.member LIKE CONCAT(CONCAT('%', #{member}),'%')
+            </if>
+            <if test="status != null and status != '' ">
+                AND tisi.status LIKE CONCAT(CONCAT('%', #{status}),'%')
+            </if>
+            <if test="year != null and year!= ''  ">
+                AND tisi.status_date = #{year}
+            </if>
+        </where>
+
+    </select>
+
+    <!--  根据 项目名称 查询-->
+    <select id="getSIByName" parameterType="String" resultType="com.nyzs.achieve.bean.dto.SIDto" resultMap="siMap">
+        select
+        *
+        from
+        tech_inno_skill_inno tisi
+        <where>
+            <if test="project != null and project != '' ">
+                tisi.project = #{project}
+            </if>
+        </where>
+
+    </select>
+
+    <!--  根据 项目id 查询-->
+    <select id="getSIById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.SIDto" resultMap="siMap">
+        select
+        *
+        from
+        tech_inno_skill_inno tisi
+        where tisi.id = #{id}
+
+    </select>
+
+    <!--  根据 项目名称 查询附件列表-->
+    <select id="getSIDocByProject" parameterType="String" resultType="com.nyzs.achieve.bean.dto.SIDocDto" resultMap="siDocMap">
+        select
+            *
+        from
+            tech_inno_skill_inno_doc tisid
+        where tisid.project = #{project}
+
+    </select>
+
+    <insert id="insertSIInfo" parameterType="com.nyzs.achieve.bean.dto.SIDto">
+        insert into
+            tech_inno_skill_inno
+        (
+            id,
+            project,
+            type,
+            leader,
+            member,
+            status,
+            status_date,
+            award,
+            update_date
+        )
+        values (
+                   id,
+                   #{project},
+                   ifnull(#{type}, "待补充"),
+                   ifnull(#{leader}, "待补充"),
+                   ifnull(#{member}, "待补充"),
+                   ifnull(#{status}, "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
+                   ifnull(#{award}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <insert id="insertSIDocInfo" parameterType="com.nyzs.achieve.bean.dto.SIDocDto">
+        insert into
+            tech_inno_skill_inno_doc
+        (
+            id,
+            doc_file_name,
+            project,
+            storage_path,
+            upload_date
+        )
+        values (
+                   id,
+                   #{docFileName},
+                   #{project},
+                   ifnull(#{storagePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateSIInfo" parameterType="com.nyzs.achieve.bean.dto.SIDto">
+        update
+            tech_inno_skill_inno tisi
+        <trim prefix="set" suffixOverrides=",">
+            <if test="project != null and project!=''">
+                tisi.project=#{project},</if>
+            <if test="type != null and type!=''">
+                tisi.type=#{type},</if>
+            <if test="leader != null and leader!=''">
+                tisi.leader=#{leader},</if>
+            <if test="member != null and member!=''">
+                tisi.member=#{member},</if>
+            <if test="status != null and status!=''">
+                tisi.status=#{status},</if>
+            <if test="statusDate != null">
+                tisi.status_date=#{statusDate},</if>
+            <if test="award != null and award!=''">
+                tisi.award=#{award},</if>
+            tisi.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+        </trim>
+
+        where
+        tisi.project = #{project}
+    </update>
+
+    <delete id="deleteSIById" parameterType="Integer">
+        delete from
+            tech_inno_skill_inno
+        where
+            id = #{id}
+    </delete>
+
+    <delete id="deleteSIDocByProject" parameterType="String">
+        delete from
+            tech_inno_skill_inno_doc
+        where
+            project = #{project}
+    </delete>
+
+    <!--&lt;!&ndash; id属性填写Dao文件里的函数名称 xxType是参数或是结果的类型根据情况填写 &ndash;&gt;
+    &lt;!&ndash; 查询所有   &ndash;&gt;
+    <select id="getExamDate" resultType="String">
+        SELECT
+            exam_date
+        from
+            exam_date
+        where id = (select max(id) from exam_date)
+    </select>
+
+    &lt;!&ndash;   查考试状态&ndash;&gt;
+    <select id="getExamStatus" resultType="com.nyzs.examonline.bean.EmployeeGrades" resultMap="employeeGradesMap">
+        SELECT
+            *
+        FROM
+            employee_grades
+        WHERE
+            employee_num = #{num}
+        AND
+            exam_date = #{examdate}
+    </select>
+
+    &lt;!&ndash;    生成10道题的试卷&ndash;&gt;
+    <insert id="generateExamPaper" parameterType="String">
+
+	    insert into
+		    exam_paper_generate_date(question_idx, question_content, answer, exam_date)
+            (select question_idx, question_content, answer, #{examdate} from exam_paper_total ORDER BY RAND() LIMIT 6)
+            UNION
+            (select question_idx, question_content, answer, #{examdate} from exam_paper_item_culture ORDER BY RAND() LIMIT 2)
+            UNION
+            (select question_idx, question_content, answer, #{examdate} from exam_paper_item_rule ORDER BY RAND() LIMIT 2);
+    </insert>
+
+    &lt;!&ndash; insert into
+    exam_paper_generate_date
+    select
+    question_idx,
+    question_content,
+    answer,
+    #{examdate}
+    from
+    exam_paper_total
+    ORDER BY
+    RAND() LIMIT 10; &ndash;&gt;
+
+    &lt;!&ndash; 查询试卷   &ndash;&gt;
+    <select id="getExamPaperByExamDate" resultType="com.nyzs.examonline.bean.ExamPaper" resultMap="examPaperMap">
+        select
+            *
+        from
+            exam_paper_generate_date
+        where
+            exam_date = #{examdate}
+    </select>
+
+    &lt;!&ndash;    修改考试期数&ndash;&gt;
+    <insert id="updateExamDate" parameterType="String">
+        insert into
+            exam_date
+        values
+            (id, #{examdate})
+    </insert>
+
+    &lt;!&ndash; 登记成绩   &ndash;&gt;
+    <insert id="recordGrades" parameterType="com.nyzs.examonline.bean.EmployeeGrades">
+        INSERT INTO
+            employee_grades
+            (id, employee_num, employee_name, exam_date, grades)
+        VALUES
+            (id,#{employeeNum},#{employeeName},#{examDate},#{grades})
+    </insert>
+
+    &lt;!&ndash;    获得所有员工的成绩&ndash;&gt;
+    <select id="getAllGrades" resultType="com.nyzs.examonline.bean.EmployeeGrades" resultMap="employeeGradesMap">
+        select
+            *
+        from
+            employee_grades
+    </select>
+
+    &lt;!&ndash;    根据姓名获得员工成绩&ndash;&gt;
+    <select id="getGradesByName" parameterType="String" resultType="com.nyzs.examonline.bean.EmployeeGrades" resultMap="employeeGradesMap">
+        select
+            *
+        from
+            employee_grades
+        where
+            employee_name = #{name}
+    </select>
+
+    &lt;!&ndash;    根据姓名or考试日期获得员工成绩&ndash;&gt;
+    <select id="getGradesByNameOrExamDate" parameterType="String" resultType="com.nyzs.examonline.bean.EmployeeGrades" resultMap="employeeGradesMap">
+        select
+            *
+        from
+            employee_grades eg
+        <where>
+            <if test="examDate!=null and examDate!='' ">
+                eg.exam_date LIKE CONCAT(CONCAT('%', #{examDate}),'%')
+            </if>
+            <if test="name!= null and name!= '' ">
+                AND eg.employee_name = #{name}
+            </if>
+        </where>
+
+    </select>-->
+
+
+
+
+
+
+
+
+</mapper>
