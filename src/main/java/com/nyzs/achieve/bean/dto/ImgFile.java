@@ -2,7 +2,7 @@ package com.nyzs.achieve.bean.dto;
 
 /**
  * @author ：RukiHuang
- * @description：TODO
+ * @description：Image DTO
  * @date ：2022/10/25 9:38
  */
 public class ImgFile {

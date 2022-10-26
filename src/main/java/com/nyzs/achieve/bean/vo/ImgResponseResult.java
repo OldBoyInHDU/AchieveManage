@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author ：RukiHuang
- * @description：TODO
+ * @description：wangedit 富文本插入图片 res
  * @date ：2022/10/25 9:32
  */
 public class ImgResponseResult implements Serializable {
