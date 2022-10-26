@@ -39,7 +39,7 @@ public class ImgController {
             res.setData(imgFile);
             return res;
         } catch (IOException e) {
-            logger.error("论文删除错误", e);
+            logger.error("图片插入错误", e);
             ImgResponseResult err = new ImgResponseResult();
             err.setErrno(500);
             err.setData(null);
