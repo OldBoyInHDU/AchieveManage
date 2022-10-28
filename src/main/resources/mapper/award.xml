@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.AwardDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">award</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.AwardDto" id="awardMap">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="level" property="level"/>
+        <result column="sort" property="sort"/>
+        <result column="awardee" property="awardee"/>
+        <result column="award" property="award"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="cert" property="cert"/>
+        <result column="cert_storage_path" property="certStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getAwards" parameterType="String" resultType="com.nyzs.achieve.bean.dto.AwardDto" resultMap="awardMap">
+        select
+        *
+        from
+        award a
+        <where>
+            <if test="type != null and type != '' ">
+                a.type LIKE CONCAT(CONCAT('%', #{type}),'%')
+            </if>
+            <if test="level != null and level != '' ">
+                AND a.level LIKE CONCAT(CONCAT('%', #{level}),'%')
+            </if>
+            <if test="sort != null and sort != '' ">
+                AND a.sort LIKE CONCAT(CONCAT('%', #{sort}),'%')
+            </if>
+            <if test="awardee != null and awardee != '' ">
+                AND a.awardee LIKE CONCAT(CONCAT('%', #{awardee}),'%')
+            </if>
+            <if test="award != null and award != '' ">
+                AND a.award LIKE CONCAT(CONCAT('%', #{award}),'%')
+            </if>
+            <if test="year != null and year!= ''  ">
+                AND a.status_date = #{year}
+            </if>
+        </where>
+
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getAwardById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.AwardDto" resultMap="awardMap">
+        select
+        *
+        from
+        award a
+        where a.id = #{id}
+
+    </select>
+
+    <insert id="insertAwardInfo" parameterType="com.nyzs.achieve.bean.dto.AwardDto">
+        insert into
+            award
+        (
+            id,
+            type,
+            level,
+            sort,
+            awardee,
+            award,
+            status_date,
+            cert,
+            cert_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{type},
+                   #{level},
+                   ifnull(#{sort}, "待补充"),
+                   ifnull(#{awardee}, "待补充"),
+                   ifnull(#{award}, "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
+                   ifnull(#{cert}, "待补充"),
+                   ifnull(#{certStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+
+    <update id="updateAwardInfo" parameterType="com.nyzs.achieve.bean.dto.AwardDto">
+        update
+            award a
+        <trim prefix="set" suffixOverrides=",">
+            <if test="type != null and type!=''">
+                a.type=#{type},</if>
+            <if test="level != null and level!=''">
+                a.level=#{level},</if>
+            <if test="sort != null and sort!=''">
+                a.sort=#{sort},</if>
+            <if test="awardee != null and awardee!=''">
+                a.awardee=#{awardee},</if>
+            <if test="award != null and award!=''">
+                a.award=#{award},</if>
+            <if test="statusDate != null and statusDate!=''">
+                a.status_date=#{statusDate},</if>
+            <if test="cert != null and cert != ''">
+                a.cert=#{cert},</if>
+            <if test="certStoragePath != null and certStoragePath!=''">
+                a.cert_storage_path=#{certStoragePath},</if>
+            a.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+        </trim>
+
+        where
+        a.id = #{id}
+    </update>
+
+    <delete id="deleteQIById" parameterType="Integer">
+        delete from
+            tech_inno_quality_improve
+        where
+            id = #{id}
+    </delete>
+
+    <delete id="deleteQIDocByProject" parameterType="String">
+        delete from
+            tech_inno_quality_improve_doc
+        where
+            project = #{project}
+    </delete>
+
+</mapper>
