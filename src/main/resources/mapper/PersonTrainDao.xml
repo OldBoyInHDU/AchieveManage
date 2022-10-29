@@ -34,7 +34,7 @@
                 AND pt.author LIKE CONCAT(CONCAT('%', #{author}),'%')
             </if>
             <if test="startDate != null and startDate!= '' and endDate != null and endDate != '' ">
-                AND tip.status_date BETWEEN #{startDate} AND #{endDate}
+                AND pt.status_date BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
 
