@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.CooperationDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">cooperation</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.CooperationDto" id="cooperationMap">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="type" property="type"/>
+        <result column="author" property="author"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="content" property="content"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getCooperations" parameterType="String" resultType="com.nyzs.achieve.bean.dto.CooperationDto" resultMap="cooperationMap">
+        select
+        *
+        from
+        cooperation c
+        <where>
+            <if test="title != null and title != '' ">
+                c.title LIKE CONCAT(CONCAT('%', #{title}),'%')
+            </if>
+            <if test="type != null and type != '' ">
+                AND c.type LIKE CONCAT(CONCAT('%', #{type}),'%')
+            </if>
+            <if test="author != null and author != '' ">
+                AND c.author LIKE CONCAT(CONCAT('%', #{author}),'%')
+            </if>
+            <if test="startDate != null and startDate!= '' and endDate != null and endDate != '' ">
+                AND c.status_date BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getCooperationById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.CooperationDto" resultMap="cooperationMap">
+        select
+        *
+        from
+            cooperation c
+        where c.id = #{id}
+
+    </select>
+
+    <insert id="insertCooperationInfo" parameterType="com.nyzs.achieve.bean.dto.CooperationDto">
+        insert into
+            cooperation
+        (
+            id,
+            title,
+            type,
+            author,
+            status_date,
+            content,
+            update_date
+        )
+        values (
+                   id,
+                   #{title},
+                   #{type},
+                   ifnull(#{author}, "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
+                   ifnull(#{content}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateCooperationInfo" parameterType="com.nyzs.achieve.bean.dto.CooperationDto">
+        update
+        cooperation c
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null and title!=''">
+                c.title=#{title},</if>
+            <if test="type != null and type!=''">
+                c.type=#{type},</if>
+            <if test="author != null and author!=''">
+                c.author=#{author},</if>
+            <if test="statusDate != null">
+                c.status_date=STR_TO_DATE(#{statusDate},'%Y-%m-%d'),</if>
+            <if test="content != null and content!=''">
+                c.content=#{content},</if>
+            c.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+
+
+        </trim>
+
+        where
+        c.id = #{id}
+
+
+    </update>
+
+
+    <delete id="deleteCooperationById" parameterType="Integer">
+        delete from
+            cooperation
+        where
+            id = #{id}
+    </delete>
+
+
+</mapper>
