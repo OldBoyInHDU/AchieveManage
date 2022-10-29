@@ -102,9 +102,9 @@
 
     <delete id="deleteTrainingById" parameterType="Integer">
         delete from
-            person_train pt
+            person_train
         where
-            pt.id = #{id}
+            id = #{id}
     </delete>
 
 
