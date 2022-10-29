@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.PersonTrainDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">person_train</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.TrainingDto" id="trainingMap">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="type" property="type"/>
+        <result column="author" property="author"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="content" property="content"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getTrainings" parameterType="String" resultType="com.nyzs.achieve.bean.dto.TrainingDto" resultMap="trainingMap">
+        select
+        *
+        from
+        person_train pt
+        <where>
+            <if test="title != null and title != '' ">
+                pt.title LIKE CONCAT(CONCAT('%', #{title}),'%')
+            </if>
+            <if test="type != null and type != '' ">
+                AND pt.type LIKE CONCAT(CONCAT('%', #{type}),'%')
+            </if>
+            <if test="author != null and author != '' ">
+                AND pt.author LIKE CONCAT(CONCAT('%', #{author}),'%')
+            </if>
+            <if test="startDate != null and startDate!= '' and endDate != null and endDate != '' ">
+                AND tip.status_date BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getTrainingById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.TrainingDto" resultMap="trainingMap">
+        select
+        *
+        from
+            person_train pt
+        where pt.id = #{id}
+
+    </select>
+
+    <insert id="insertTrainingInfo" parameterType="com.nyzs.achieve.bean.dto.TrainingDto">
+        insert into
+            person_train
+        (
+            id,
+            title,
+            type,
+            author,
+            status_date,
+            content,
+            update_date
+        )
+        values (
+                   id,
+                   #{title},
+                   #{type},
+                   ifnull(#{author}, "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
+                   ifnull(#{content}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateTrainingInfo" parameterType="com.nyzs.achieve.bean.dto.TrainingDto">
+        update
+        person_train pt
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null and title!=''">
+                pt.title=#{title},</if>
+            <if test="type != null and type!=''">
+                pt.type=#{type},</if>
+            <if test="author != null and author!=''">
+                pt.author=#{author},</if>
+            <if test="statusDate != null">
+                pt.status_date=STR_TO_DATE(#{statusDate},'%Y-%m-%d'),</if>
+            <if test="content != null and content!=''">
+                pt.content=#{content},</if>
+            pt.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+
+
+        </trim>
+
+        where
+        pt.id = #{id}
+
+
+    </update>
+
+
+    <delete id="deleteTrainingById" parameterType="Integer">
+        delete from
+            person_train pt
+        where
+            pt.id = #{id}
+    </delete>
+
+
+</mapper>
