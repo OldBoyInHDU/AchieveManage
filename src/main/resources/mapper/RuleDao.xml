@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.RuleDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">rule</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.RuleDto" id="ruleMap">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="rule" property="rule"/>
+        <result column="rule_storage_path" property="ruleStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getRules" parameterType="String" resultType="com.nyzs.achieve.bean.dto.RuleDto" resultMap="ruleMap">
+        select
+        *
+        from
+        rule r
+        <where>
+            <if test="type != null and type != '' ">
+                AND r.type LIKE CONCAT(CONCAT('%', #{type}),'%')
+            </if>
+        </where>
+
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getRuleById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.RuleDto" resultMap="ruleMap">
+        select
+        *
+        from
+            rule r
+        where r.id = #{id}
+
+    </select>
+
+    <insert id="insertRuleInfo" parameterType="com.nyzs.achieve.bean.dto.RuleDto">
+        insert into
+            rule
+        (
+            id,
+            type,
+            rule,
+            rule_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{type},
+                   ifnull(#{rule}, "待补充"),
+                   ifnull(#{ruleStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateRuleInfo" parameterType="com.nyzs.achieve.bean.dto.RuleDto">
+        update
+        rule r
+        <trim prefix="set" suffixOverrides=",">
+            <if test="type != null and type!=''">
+                r.type=#{type},</if>
+            <if test="rule != null and rule!=''">
+                r.rule=#{rule},</if>
+            <if test="ruleStoragePath != null and ruleStoragePath!=''">
+                r.rule_storage_path=#{ruleStoragePath},</if>
+            r.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+
+
+        </trim>
+
+        where
+        r.id = #{id}
+
+
+    </update>
+
+
+    <delete id="deleteRuleById" parameterType="Integer">
+        delete from
+            rule
+        where
+            id = #{id}
+    </delete>
+
+
+</mapper>
