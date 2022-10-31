@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.MemberDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">studio_member</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.MemberDto" id="memberMap">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="gender" property="gender"/>
+        <result column="birthday" property="birthday"/>
+        <result column="academic" property="academic"/>
+        <result column="degree" property="degree"/>
+        <result column="skill_name_1" property="skillName1"/>
+        <result column="skill_level_1" property="skillLevel1"/>
+        <result column="skill_name_2" property="skillName2"/>
+        <result column="skill_level_2" property="skillLevel2"/>
+        <result column="tech_name" property="techName"/>
+        <result column="tech_level" property="techLevel"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getMembers" parameterType="String" resultType="com.nyzs.achieve.bean.dto.MemberDto" resultMap="memberMap">
+        select
+        *
+        from
+        studio_member sm
+        <where>
+            <if test="name != null and name != '' ">
+                sm.name LIKE CONCAT(CONCAT('%', #{name}),'%')
+            </if>
+            <if test="type != null and type != '' ">
+                AND sm.type LIKE CONCAT(CONCAT('%', #{type}),'%')
+            </if>
+            <if test="academic != null and academic != '' ">
+                AND sm.academic LIKE CONCAT(CONCAT('%', #{academic}),'%')
+            </if>
+            <if test="skillName1 != null and skillName1 != '' ">
+                AND sm.skill_name_1 LIKE CONCAT(CONCAT('%', #{skillName1}),'%')
+            </if>
+            <if test="techName != null and techName != '' ">
+                AND sm.tech_name LIKE CONCAT(CONCAT('%', #{techName}),'%')
+            </if>
+        </where>
+
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getMemberById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.MemberDto" resultMap="memberMap">
+        select
+        *
+        from
+            studio_member sm
+        where sm.id = #{id}
+
+    </select>
+
+    <insert id="insertMemberInfo" parameterType="com.nyzs.achieve.bean.dto.MemberDto">
+        insert into
+            studio_member
+        (
+            id,
+            name,
+            type,
+            gender,
+            birthday,
+            academic,
+            degree,
+            skill_name_1,
+            skill_level_1,
+            skill_name_2,
+            skill_level_2,
+            tech_name,
+            tech_level,
+            update_date
+        )
+        values (
+                   id,
+                   #{name},
+                   #{type},
+                   ifnull(#{gender}, "待补充"),
+                   ifnull(#{birthday}, "待补充"),
+                   ifnull(#{academic}, "待补充"),
+                   ifnull(#{degree}, "待补充"),
+                   ifnull(#{skillName1}, "待补充"),
+                   ifnull(#{skillLevel1}, "待补充"),
+                   ifnull(#{skillName2}, "待补充"),
+                   ifnull(#{skillLevel2}, "待补充"),
+                   ifnull(#{techName}, "待补充"),
+                   ifnull(#{techLevel}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+
+    <update id="updateMemberInfo" parameterType="com.nyzs.achieve.bean.dto.MemberDto">
+        update
+            studio_member sm
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name!=''">
+                sm.name=#{name},</if>
+            <if test="type != null and type!=''">
+                sm.type=#{type},</if>
+            <if test="gender != null and gender!=''">
+                sm.gender=#{gender},</if>
+            <if test="birthday != null and birthday!=''">
+                sm.birthday=#{birthday},</if>
+            <if test="academic != null and academic!=''">
+                sm.academic=#{academic},</if>
+            <if test="degree != null and degree!=''">
+                sm.degree=#{degree},</if>
+            <if test="skillName1 != null and skillName1 != ''">
+                sm.skill_name_1=#{skillName1},</if>
+            <if test="skillLevel1 != null and skillLevel1!=''">
+                sm.skill_level_1=#{skillLevel1},</if>
+            <if test="skillName2 != null and skillName2 != ''">
+                sm.skill_name_2=#{skillName2},</if>
+            <if test="skillLevel2 != null and skillLevel2!=''">
+                sm.skill_level_2=#{skillLevel2},</if>
+            <if test="techName != null and techName != ''">
+                sm.tech_name=#{techName},</if>
+            <if test="techLevel != null and techLevel!=''">
+                sm.tech_level=#{techLevel},</if>
+            sm.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+        </trim>
+
+        where
+        sm.id = #{id}
+    </update>
+
+    <delete id="deleteMemberById" parameterType="Integer">
+        delete from
+            studio_member
+        where
+            id = #{id}
+    </delete>
+
+
+</mapper>
