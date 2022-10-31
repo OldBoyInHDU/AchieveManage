@@ -2,7 +2,7 @@ package com.nyzs.achieve.bean.vo;
 
 /**
  * @author ：RukiHuang
- * @description：TODO
+ * @description：成员VO
  * @date ：2022/10/31 14:08
  */
 public class MemberVo {

@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * @author ：RukiHuang
- * @description：TODO
+ * @description：成员 DTO
  * @date ：2022/10/31 14:08
  */
 public class MemberDto {
