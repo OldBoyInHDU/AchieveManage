@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.StudioDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">rule</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.ProfileDto" id="profileMap">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="profile" property="profile"/>
+        <result column="profile_storage_path" property="profileStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getProfiles" parameterType="String" resultType="com.nyzs.achieve.bean.dto.ProfileDto" resultMap="profileMap">
+        select
+        *
+        from
+        studio_profile sp
+        <where>
+            <if test="type != null and type != '' ">
+                AND sp.type LIKE CONCAT(CONCAT('%', #{type}),'%')
+            </if>
+        </where>
+
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getProfileById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.ProfileDto" resultMap="profileMap">
+        select
+        *
+        from
+            studio_profile sp
+        where sp.id = #{id}
+
+    </select>
+
+    <insert id="insertProfileInfo" parameterType="com.nyzs.achieve.bean.dto.ProfileDto">
+        insert into
+            studio_profile
+        (
+            id,
+            type,
+            profile,
+            profile_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{type},
+                   ifnull(#{profile}, "待补充"),
+                   ifnull(#{profileStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateProfileInfo" parameterType="com.nyzs.achieve.bean.dto.ProfileDto">
+        update
+        studio_profile sp
+        <trim prefix="set" suffixOverrides=",">
+            <if test="type != null and type!=''">
+                sp.type=#{type},</if>
+            <if test="profile != null and profile!=''">
+                sp.profile=#{profile},</if>
+            <if test="profileStoragePath != null and profileStoragePath!=''">
+                sp.profile_storage_path=#{profileStoragePath},</if>
+            sp.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+
+
+        </trim>
+
+        where
+        sp.id = #{id}
+
+
+    </update>
+
+
+    <delete id="deleteProfileById" parameterType="Integer">
+        delete from
+            studio_profile
+        where
+            id = #{id}
+    </delete>
+
+
+</mapper>
