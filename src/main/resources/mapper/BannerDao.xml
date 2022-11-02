@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.BannerDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">index_banner</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.BannerDto" id="bannerMap">
+        <id column="id" property="id"/>
+        <result column="img_name" property="imgName"/>
+        <result column="img_storage_path" property="imgStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getBanners"  resultType="com.nyzs.achieve.bean.dto.BannerDto" resultMap="bannerMap">
+        select
+        *
+        from
+            index_banner
+    </select>
+
+
+    <insert id="insertBannerInfo" parameterType="String">
+        insert into
+            index_banner
+        (
+            id,
+            img_name,
+            img_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   ifnull(#{imgName}, "待补充"),
+                   ifnull(#{imgStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <delete id="deleteBannerById" parameterType="Integer">
+        delete from
+            index_banner
+        where
+            id = #{id}
+    </delete>
+
+
+
+</mapper>
