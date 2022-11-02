@@ -26,6 +26,9 @@ public class UploadServiceImpl implements UploadService {
     @Value("${img.upload.path}")
     private String imgPath;
 
+    @Value("${img.store.imgBaseURL}")
+    private String imgBaseURL;
+
     @Override
     public String uploadDoc(MultipartFile file) throws IOException {
         System.out.println(file.getContentType());
@@ -72,9 +75,9 @@ public class UploadServiceImpl implements UploadService {
         File newFile = new File(imgPath + imgName);
         file.transferTo(newFile);
         System.out.println(newFile.getPath());
-        String url = "http://localhost:8088/achieve/filestore/img/" + imgName;
+        String url = imgBaseURL+ "" + imgName;
         String alt = file.getOriginalFilename();
-        String href = "http://localhost:8088/achieve/filestore/img/" + imgName;
+        String href = imgBaseURL + "" + imgName;
         ImgFile imgFile = new ImgFile(url, alt, href);
         return imgFile;
     }
