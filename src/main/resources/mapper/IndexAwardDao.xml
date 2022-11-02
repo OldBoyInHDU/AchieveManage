@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.IndexAwardDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">index_award</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.IndexAwardDto" id="indexAwardMap">
+        <id column="id" property="id"/>
+        <result column="project" property="project"/>
+        <result column="awardee" property="awardee"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="award" property="award"/>
+        <result column="img_name" property="imgName"/>
+        <result column="img_storage_path" property="imgStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getAwards" resultType="com.nyzs.achieve.bean.dto.IndexAwardDto" resultMap="indexAwardMap">
+        select
+        *
+        from
+        index_award ia
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getAwardById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.IndexAwardDto" resultMap="indexAwardMap">
+        select
+        *
+        from
+            index_award ia
+        where ia.id = #{id}
+
+    </select>
+
+    <insert id="insertAwardInfo" parameterType="com.nyzs.achieve.bean.dto.IndexAwardDto">
+        insert into
+            index_award
+        (
+            id,
+            project,
+            awardee,
+            status_date,
+            award,
+            img_name,
+            img_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{project},
+                   ifnull(#{awardee}, "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
+                   ifnull(#{award}, "待补充"),
+                   ifnull(#{imgName}, "待补充"),
+                   ifnull(#{imgStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateAwardInfo" parameterType="com.nyzs.achieve.bean.dto.IndexAwardDto">
+        update
+        index_award ia
+        <trim prefix="set" suffixOverrides=",">
+            <if test="project != null and project!=''">
+                ia.project=#{project},</if>
+            <if test="awardee != null and awardee!=''">
+                ia.awardee=#{awardee},</if>
+            <if test="statusDate != null and statusDate!=''">
+                ia.status_date=#{statusDate},</if>
+            <if test="award != null and award!=''">
+                ia.award=#{award},</if>
+            <if test="imgName != null and imgName!=''">
+                ia.img_name=#{imgName},</if>
+            <if test="imgStoragePath != null and imgStoragePath!=''">
+                ia.img_storage_path=#{imgStoragePath},</if>
+            ia.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+
+
+        </trim>
+
+        where
+        ia.id = #{id}
+
+
+    </update>
+
+
+    <delete id="deleteAwardById" parameterType="Integer">
+        delete from
+            index_award
+        where
+            id = #{id}
+    </delete>
+
+
+</mapper>
