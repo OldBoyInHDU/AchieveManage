@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.IndexCoopeDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">index_coope</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.IndexCoopeDto" id="indexCoopeMap">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="img_name" property="imgName"/>
+        <result column="img_storage_path" property="imgStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getCoopes" resultType="com.nyzs.achieve.bean.dto.IndexCoopeDto" resultMap="indexCoopeMap">
+        select
+        *
+        from
+            index_coope
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getCoopeById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.IndexCoopeDto" resultMap="indexCoopeMap">
+        select
+        *
+        from
+            index_coope ic
+        where ic.id = #{id}
+
+    </select>
+
+    <insert id="insertCoopeInfo" parameterType="com.nyzs.achieve.bean.dto.IndexCoopeDto">
+        insert into
+            index_coope
+        (
+            id,
+            title,
+            content,
+            status_date,
+            img_name,
+            img_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{title},
+                   ifnull(#{content}, "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
+                   ifnull(#{imgName}, "待补充"),
+                   ifnull(#{imgStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateCoopeInfo" parameterType="com.nyzs.achieve.bean.dto.IndexCoopeDto">
+        update
+        index_coope ic
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null and title!=''">
+                ic.title=#{title},</if>
+            <if test="content != null and content!=''">
+                ic.content=#{content},</if>
+            <if test="statusDate != null and statusDate!=''">
+                ic.status_date=#{statusDate},</if>
+            <if test="imgName != null and imgName!=''">
+                ic.img_name=#{imgName},</if>
+            <if test="imgStoragePath != null and imgStoragePath!=''">
+                ic.img_storage_path=#{imgStoragePath},</if>
+            ic.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+        </trim>
+
+        where
+        ic.id = #{id}
+
+
+    </update>
+
+
+    <delete id="deleteCoopeById" parameterType="Integer">
+        delete from
+            index_coope
+        where
+            id = #{id}
+    </delete>
+
+
+</mapper>
