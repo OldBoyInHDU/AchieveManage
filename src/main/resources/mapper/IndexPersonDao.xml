@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.IndexPersonDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">index_person</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.IndexTrainingDto" id="indexTrainingMap">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="status_date" property="statusDate"/>
+        <result column="img_name" property="imgName"/>
+        <result column="img_storage_path" property="imgStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getTrainings" resultType="com.nyzs.achieve.bean.dto.IndexTrainingDto" resultMap="indexTrainingMap">
+        select
+        *
+        from
+            index_person
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getTrainingById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.IndexTrainingDto" resultMap="indexTrainingMap">
+        select
+        *
+        from
+            index_person ip
+        where ip.id = #{id}
+
+    </select>
+
+    <insert id="insertTrainingInfo" parameterType="com.nyzs.achieve.bean.dto.IndexTrainingDto">
+        insert into
+            index_person
+        (
+            id,
+            title,
+            content,
+            status_date,
+            img_name,
+            img_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{title},
+                   ifnull(#{content}, "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
+                   ifnull(#{imgName}, "待补充"),
+                   ifnull(#{imgStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateTrainingInfo" parameterType="com.nyzs.achieve.bean.dto.IndexTrainingDto">
+        update
+        index_person ip
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null and title!=''">
+                ip.title=#{title},</if>
+            <if test="content != null and content!=''">
+                ip.content=#{content},</if>
+            <if test="statusDate != null and statusDate!=''">
+                ip.status_date=#{statusDate},</if>
+            <if test="imgName != null and imgName!=''">
+                ip.img_name=#{imgName},</if>
+            <if test="imgStoragePath != null and imgStoragePath!=''">
+                ip.img_storage_path=#{imgStoragePath},</if>
+            ip.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+        </trim>
+
+        where
+        ip.id = #{id}
+
+
+    </update>
+
+
+    <delete id="deleteTrainingById" parameterType="Integer">
+        delete from
+            index_person
+        where
+            id = #{id}
+    </delete>
+
+
+</mapper>
