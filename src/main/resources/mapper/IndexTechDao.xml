@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 这里填写对应的Dao文件所在的路径 -->
+<mapper namespace="com.nyzs.achieve.dao.IndexTechDao"    >
+    <!-- 填写数据库里对应的表的表名 -->
+    <!-- 这里是作为一个变量使用 -->
+    <sql id="table">index_tech</sql>
+
+    <resultMap type="com.nyzs.achieve.bean.dto.IndexTechDto" id="indexTechMap">
+        <id column="id" property="id"/>
+        <result column="project" property="project"/>
+        <result column="content" property="content"/>
+        <result column="img_name" property="imgName"/>
+        <result column="img_storage_path" property="imgStoragePath"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+    
+    <!--   查询-->
+    <select id="getTechs" resultType="com.nyzs.achieve.bean.dto.IndexTechDto" resultMap="indexTechMap">
+        select
+        *
+        from
+            index_tech
+    </select>
+
+
+    <!--  根据 项目id 查询-->
+    <select id="getTechById" parameterType="Integer" resultType="com.nyzs.achieve.bean.dto.IndexTechDto" resultMap="indexTechMap">
+        select
+        *
+        from
+            index_tech it
+        where it.id = #{id}
+
+    </select>
+
+    <insert id="insertTechInfo" parameterType="com.nyzs.achieve.bean.dto.IndexTechDto">
+        insert into
+            index_tech
+        (
+            id,
+            project,
+            content,
+            img_name,
+            img_storage_path,
+            update_date
+        )
+        values (
+                   id,
+                   #{project},
+                   ifnull(#{content}, "待补充"),
+                   ifnull(#{imgName}, "待补充"),
+                   ifnull(#{imgStoragePath}, "待补充"),
+                   DATE_FORMAT(NOW(), '%Y-%m-%d')
+               )
+    </insert>
+
+    <update id="updateTechInfo" parameterType="com.nyzs.achieve.bean.dto.IndexTechDto">
+        update
+        index_tech it
+        <trim prefix="set" suffixOverrides=",">
+            <if test="project != null and project!=''">
+                it.project=#{project},</if>
+            <if test="content != null and content!=''">
+                it.content=#{content},</if>
+            <if test="imgName != null and imgName!=''">
+                it.img_name=#{imgName},</if>
+            <if test="imgStoragePath != null and imgStoragePath!=''">
+                it.img_storage_path=#{imgStoragePath},</if>
+            it.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
+        </trim>
+
+        where
+        it.id = #{id}
+
+
+    </update>
+
+
+    <delete id="deleteTechById" parameterType="Integer">
+        delete from
+            index_tech
+        where
+            id = #{id}
+    </delete>
+
+
+</mapper>
