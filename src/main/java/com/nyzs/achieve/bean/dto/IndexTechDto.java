@@ -13,8 +13,10 @@ public class IndexTechDto {
     private Integer id;
     private String project;
     private String content;
-    private String imgName;
-    private String imgStoragePath;
+    private String type;
+    private String statusDate;
+//    private String imgName;
+//    private String imgStoragePath;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date updateDate;
 
@@ -27,8 +29,8 @@ public class IndexTechDto {
                 "id=" + id +
                 ", project='" + project + '\'' +
                 ", content='" + content + '\'' +
-                ", imgName='" + imgName + '\'' +
-                ", imgStoragePath='" + imgStoragePath + '\'' +
+                ", type='" + type + '\'' +
+                ", statusDate='" + statusDate + '\'' +
                 ", updateDate=" + updateDate +
                 '}';
     }
@@ -57,20 +59,20 @@ public class IndexTechDto {
         this.content = content;
     }
 
-    public String getImgName() {
-        return imgName;
+    public String getType() {
+        return type;
     }
 
-    public void setImgName(String imgName) {
-        this.imgName = imgName;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getImgStoragePath() {
-        return imgStoragePath;
+    public String getStatusDate() {
+        return statusDate;
     }
 
-    public void setImgStoragePath(String imgStoragePath) {
-        this.imgStoragePath = imgStoragePath;
+    public void setStatusDate(String statusDate) {
+        this.statusDate = statusDate;
     }
 
     public Date getUpdateDate() {

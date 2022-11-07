@@ -35,8 +35,8 @@ public class IndexTechServiceImpl implements IndexTechService {
         IndexTechDto indexTechDto = new IndexTechDto();
         indexTechDto.setProject(indexTechVo.getProject());
         indexTechDto.setContent(indexTechVo.getContent());
-        indexTechDto.setImgName(indexTechVo.getImgName());
-        indexTechDto.setImgStoragePath(indexTechVo.getImgStoragePath());
+        indexTechDto.setType(indexTechVo.getType());
+        indexTechDto.setStatusDate(indexTechVo.getStatusDate());
 
         if (indexTechDao.getTechById(indexTechVo.getId()) != null) {
             indexTechDto.setId(indexTechVo.getId());

@@ -11,8 +11,8 @@
         <id column="id" property="id"/>
         <result column="project" property="project"/>
         <result column="content" property="content"/>
-        <result column="img_name" property="imgName"/>
-        <result column="img_storage_path" property="imgStoragePath"/>
+        <result column="type" property="type"/>
+        <result column="status_date" property="statusDate"/>
         <result column="update_date" property="updateDate"/>
     </resultMap>
     
@@ -42,16 +42,16 @@
             id,
             project,
             content,
-            img_name,
-            img_storage_path,
+            type,
+            status_date,
             update_date
         )
         values (
                    id,
                    #{project},
                    ifnull(#{content}, "待补充"),
-                   ifnull(#{imgName}, "待补充"),
-                   ifnull(#{imgStoragePath}, "待补充"),
+                   ifnull(#{type}, "待补充"),
+                   ifnull(#{statusDate}, "待补充"),
                    DATE_FORMAT(NOW(), '%Y-%m-%d')
                )
     </insert>
@@ -64,10 +64,10 @@
                 it.project=#{project},</if>
             <if test="content != null and content!=''">
                 it.content=#{content},</if>
-            <if test="imgName != null and imgName!=''">
-                it.img_name=#{imgName},</if>
-            <if test="imgStoragePath != null and imgStoragePath!=''">
-                it.img_storage_path=#{imgStoragePath},</if>
+            <if test="type != null and type!=''">
+                it.type=#{type},</if>
+            <if test="statusDate != null and statusDate!=''">
+                it.status_date=#{statusDate},</if>
             it.update_date = DATE_FORMAT(NOW(), '%Y-%m-%d')
         </trim>
 
