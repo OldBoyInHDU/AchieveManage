@@ -23,6 +23,9 @@
         *
         from
             index_person
+        order by
+            update_date
+        desc
     </select>
 
 

@@ -58,7 +58,9 @@
                 AND tiqi.status_date = #{year}
             </if>
         </where>
-
+        order by
+            update_date
+        desc
     </select>
 
     <!--  根据 项目名称 查询-->

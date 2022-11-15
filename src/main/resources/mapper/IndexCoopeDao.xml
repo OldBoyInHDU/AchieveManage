@@ -23,6 +23,9 @@
         *
         from
             index_coope
+        order by
+            update_date
+        desc
     </select>
 
 

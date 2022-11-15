@@ -22,6 +22,9 @@
         *
         from
             index_tech
+        order by
+            update_date
+        desc
     </select>
 
 

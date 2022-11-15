@@ -20,6 +20,9 @@
         *
         from
             index_banner
+        order by
+            update_date
+                desc
     </select>
 
 

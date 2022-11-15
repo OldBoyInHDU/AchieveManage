@@ -24,6 +24,9 @@
         *
         from
         index_award ia
+        order by
+            update_date
+        desc
     </select>
 
 

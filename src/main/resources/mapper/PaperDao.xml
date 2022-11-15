@@ -53,7 +53,9 @@
                 AND tip.status_date BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
-
+        order by
+            update_date
+        desc
     </select>
 
     <!--  根据 专利名称 查询-->

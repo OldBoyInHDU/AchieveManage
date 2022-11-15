@@ -37,7 +37,9 @@
                 AND pt.status_date BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
-
+        order by
+            update_date
+        desc
     </select>
 
 

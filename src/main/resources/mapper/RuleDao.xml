@@ -26,7 +26,9 @@
                 AND r.type LIKE CONCAT(CONCAT('%', #{type}),'%')
             </if>
         </where>
-
+        order by
+            update_date
+        desc
     </select>
 
 

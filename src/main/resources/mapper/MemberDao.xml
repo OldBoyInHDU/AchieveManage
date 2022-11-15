@@ -47,7 +47,9 @@
                 AND sm.tech_name LIKE CONCAT(CONCAT('%', #{techName}),'%')
             </if>
         </where>
-
+        order by
+            update_date
+        desc
     </select>
 
 
